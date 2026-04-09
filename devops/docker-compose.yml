@@ -1,0 +1,71 @@
+services:
+  nginx:
+    image: nginx:1.29.5-alpine3.23
+    depends_on:
+      - php
+    ports:
+      - "80:80"
+    volumes:
+      - ../web:/var/www/html:delegated
+      - ./docker/nginx/conf.d:/etc/nginx/conf.d:ro
+    networks:
+      - appnet
+
+
+  php:
+    build:
+      context: .
+      dockerfile: ./docker/php/Dockerfile
+    working_dir: /var/www/html
+    volumes:
+      - ../web:/var/www/html:delegated
+    environment:
+      APP_ENV: local
+      DB_CONNECTION: pgsql
+      DB_HOST: postgres
+      DB_PORT: 5432
+      DB_DATABASE: app
+      DB_USERNAME: app
+      DB_PASSWORD: app
+    networks:
+      - appnet
+
+  postgres:
+    image: postgres:18.2-alpine3.23
+    ports:
+      - "5432:5432"
+    environment:
+      POSTGRES_DB: app
+      POSTGRES_USER: app
+      POSTGRES_PASSWORD: app
+    volumes:
+      - pgdata:/var/lib/postgresql/data
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U app -d app"]
+      interval: 5s
+      timeout: 3s
+      retries: 10
+    networks:
+      - appnet
+
+  chat:
+    image: node:24-alpine3.22
+    working_dir: /app
+    volumes:
+      - ../chat:/app:delegated
+    command: ["sh", "-lc", "npm i && npm run dev"]
+    environment:
+      PORT: 3030
+      LARAVEL_URL: http://nginx
+    expose:
+      - "3030"
+    networks:
+      - appnet
+    profiles: ["chat"]
+
+networks:
+  appnet:
+
+volumes:
+  pgdata:
+
