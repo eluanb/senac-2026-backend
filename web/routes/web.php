@@ -17,4 +17,5 @@ Route::group(['middleware' => 'auth'], function () {
 
 
     Route::get('/chamados', [TicketController::class, 'index'])->name('tickets.index');
+    Route::post('/chamados', [TicketController::class, 'create'])->name('tickets.store');
 });

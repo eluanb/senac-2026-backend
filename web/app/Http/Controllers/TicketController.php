@@ -4,7 +4,6 @@ namespace App\Http\Controllers;
 
 use App\Models\Ticket;
 use Illuminate\Http\Request;
-use Illuminate\Support\Facades\Auth;
 
 class TicketController extends Controller
 {
@@ -16,23 +15,17 @@ class TicketController extends Controller
         ]);
     }
 
-    public function store(Request $request)
+    public function create(Request $request)
     {
-        $user = $request->header('x-api-user');
-        $pass = $request->header('x-api-pass');
+        $validated = $request->validate([
+            'title'       => 'required|string|max:255',
+            'description' => 'required|string|max:1000',
+            'status'      => 'required|in:Aberto,Pendente,Resolvido,Cancelado',
+        ]);
 
-        if (Auth::attempt(['email' => $user, 'password' => $pass])) {
-            $ticket = Ticket::create([
-                'title' => $request->input('title'),
-                'description' => $request->input('description'),
-                'status' => 'open',
-            ]);
+        Ticket::create($validated);
 
-            return response()->json($ticket, 201);
-        } else {
-            return response()->json(['error' => 'Unauthorized'], 401);
-        }
-        
+        return redirect()->route('tickets.index')->with('success', 'Chamado criado com sucesso!');
     }
 
 
