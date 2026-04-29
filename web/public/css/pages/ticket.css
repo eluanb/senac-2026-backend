@@ -248,6 +248,59 @@ tbody td {
     background: #f87171;
 }
 
+.btn-chat {
+    display: inline-flex;
+    align-items: center;
+    gap: 4px;
+    padding: 4px 12px;
+    border-radius: 8px;
+    background: rgba(79, 142, 247, .12);
+    border: 1px solid rgba(79, 142, 247, .25);
+    color: var(--accent);
+    font-size: 12px;
+    font-weight: 600;
+    text-decoration: none;
+    transition: background .2s, border-color .2s;
+    white-space: nowrap;
+}
+
+.btn-chat:hover {
+    background: rgba(79, 142, 247, .25);
+    border-color: var(--accent);
+}
+
+.ticket-actions {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    flex-wrap: wrap;
+}
+
+.ticket-actions form {
+    margin: 0;
+}
+
+.btn-atender {
+    display: inline-flex;
+    align-items: center;
+    gap: 4px;
+    padding: 4px 12px;
+    border-radius: 8px;
+    background: rgba(34, 211, 165, .12);
+    border: 1px solid rgba(34, 211, 165, .3);
+    color: #22d3a5;
+    font-size: 12px;
+    font-weight: 600;
+    cursor: pointer;
+    transition: background .2s, border-color .2s;
+    white-space: nowrap;
+}
+
+.btn-atender:hover {
+    background: rgba(34, 211, 165, .22);
+    border-color: rgba(34, 211, 165, .45);
+}
+
 .pagination {
     display: flex;
     align-items: center;

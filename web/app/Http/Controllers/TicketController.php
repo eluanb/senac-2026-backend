@@ -23,6 +23,8 @@ class TicketController extends Controller
             'status'      => 'required|in:Aberto,Pendente,Resolvido,Cancelado',
         ]);
 
+        $validated['user_id'] = $request->user()->id;
+
         Ticket::create($validated);
 
         return redirect()->route('tickets.index')->with('success', 'Chamado criado com sucesso!');

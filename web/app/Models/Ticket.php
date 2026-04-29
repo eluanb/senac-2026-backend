@@ -3,14 +3,27 @@
 namespace App\Models;
 
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Relations\BelongsTo;
 
 class Ticket extends Model
 {
 
     protected $fillable = [
+        'user_id',
+        'assigned_to',
         'title',
         'description',
         'status',
     ];
+
+    public function owner(): BelongsTo
+    {
+        return $this->belongsTo(User::class, 'user_id');
+    }
+
+    public function attendant(): BelongsTo
+    {
+        return $this->belongsTo(User::class, 'assigned_to');
+    }
 
 }

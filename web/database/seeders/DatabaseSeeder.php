@@ -19,6 +19,14 @@ class DatabaseSeeder extends Seeder
             'name' => 'Eluan Bocca',
             'email' => 'eluan.bocca@prof.sc.senac.br',
             'password' => bcrypt('12345678'),
+            'role' => 'atendente',
+        ]);
+
+        User::factory()->create([
+            'name' => 'Usuario Padrao',
+            'email' => 'usuario@aulabackendsenac.com',
+            'password' => bcrypt('12345678'),
+            'role' => 'usuario',
         ]);
     }
 }

@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\Api\ApiTicketController;
 use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Hash;
@@ -19,4 +20,12 @@ Route::post('/tokens/create', function (Request $request) {
     $token = $user->createToken($request->token_name);
 
     return ['token' => $token->plainTextToken];
+});
+
+Route::group(['middleware' => 'auth:sanctum'], function () {
+
+    Route::get('/tickets', function (Request $request) {
+        return ApiTicketController::getTickets($request);
+    });
+
 });

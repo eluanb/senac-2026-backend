@@ -1,0 +1,13 @@
+{
+  "name": "senac-chat",
+  "version": "1.0.0",
+  "description": "Chat entre atendente e usuário por ticket",
+  "main": "server.js",
+  "scripts": {
+    "dev": "node server.js",
+    "start": "node server.js"
+  },
+  "dependencies": {
+    "socket.io": "^4.7.5"
+  }
+}

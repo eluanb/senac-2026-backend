@@ -1,6 +1,7 @@
 <?php
 
 use App\Http\Controllers\TicketController;
+use App\Http\Controllers\ChatController;
 use App\Http\Controllers\Web\LoginController;
 use Illuminate\Support\Facades\Route;
 
@@ -18,4 +19,6 @@ Route::group(['middleware' => 'auth'], function () {
 
     Route::get('/chamados', [TicketController::class, 'index'])->name('tickets.index');
     Route::post('/chamados', [TicketController::class, 'create'])->name('tickets.store');
+    Route::get('/chamados/{ticket}/chat', [ChatController::class, 'show'])->name('tickets.chat');
+    Route::post('/chamados/{ticket}/atender', [ChatController::class, 'take'])->name('tickets.take');
 });

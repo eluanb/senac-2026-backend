@@ -3,6 +3,7 @@ services:
     image: nginx:1.29.5-alpine3.23
     depends_on:
       - php
+      - chat
     ports:
       - "80:80"
     volumes:
@@ -57,11 +58,11 @@ services:
     environment:
       PORT: 3030
       LARAVEL_URL: http://nginx
+      CHAT_SECRET: ${CHAT_SECRET:-senac-chat-secret-local}
     expose:
       - "3030"
     networks:
       - appnet
-    profiles: ["chat"]
 
 networks:
   appnet:

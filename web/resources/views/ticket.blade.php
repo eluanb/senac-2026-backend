@@ -62,6 +62,7 @@
                     <th>Titulo</th>
                     <th>Descricao</th>
                     <th>Status</th>
+                    <th>Ações</th>
                 </tr>
             </thead>
             <tbody id="tableBody">
@@ -77,10 +78,22 @@
                     <td>{{ $chamado->title }}</td>
                     <td>{{ $chamado->description }}</td>
                     <td><span class="badge {{ $statusClass }}">{{ ucfirst($chamado->status) }}</span></td>
+                    <td>
+                        <div class="ticket-actions">
+                            <a href="{{ route('tickets.chat', $chamado) }}" class="btn-chat">💬 Chat</a>
+
+                            @if ((auth()->user()->role ?? 'usuario') === 'atendente' && $chamado->assigned_to === null)
+                            <form method="POST" action="{{ route('tickets.take', $chamado) }}">
+                                @csrf
+                                <button type="submit" class="btn-atender">🎧 Atender</button>
+                            </form>
+                            @endif
+                        </div>
+                    </td>
                 </tr>
                 @empty
                 <tr>
-                    <td colspan="4" style="color:var(--text-muted)">Nenhum chamado encontrado.</td>
+                    <td colspan="5" style="color:var(--text-muted)">Nenhum chamado encontrado.</td>
                 </tr>
                 @endforelse
             </tbody>
