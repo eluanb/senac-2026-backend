@@ -14,11 +14,12 @@ Route::group(['middleware' => 'auth'], function () {
     Route::get('/dashboard', function () {
         return view('dashboard');
     })->name('dashboard');
-    
+
 
 
     Route::get('/chamados', [TicketController::class, 'index'])->name('tickets.index');
     Route::post('/chamados', [TicketController::class, 'create'])->name('tickets.store');
+    Route::post('/chamados/{ticket}/sugestao-ia', [TicketController::class, 'aiSuggest'])->name('tickets.ai');
     Route::get('/chamados/{ticket}/chat', [ChatController::class, 'show'])->name('tickets.chat');
     Route::post('/chamados/{ticket}/atender', [ChatController::class, 'take'])->name('tickets.take');
 });

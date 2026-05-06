@@ -3,7 +3,9 @@
 namespace App\Http\Controllers;
 
 use App\Models\Ticket;
+use App\Services\OpenRouterService;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Log;
 
 class TicketController extends Controller
 {
@@ -30,5 +32,27 @@ class TicketController extends Controller
         return redirect()->route('tickets.index')->with('success', 'Chamado criado com sucesso!');
     }
 
+    public function aiSuggest(Ticket $ticket, OpenRouterService $ai)
+    {
+        try {
+            $sugestao = $ai->sugerirSolucao(
+                $ticket->title,
+                $ticket->description,
+                $ticket->status
+            );
 
+            return response()->json(['sugestao' => $sugestao]);
+        } catch (\Throwable $e) {
+            Log::error('Erro ao gerar sugestao de IA para chamado.', [
+                'ticket_id' => $ticket->id,
+                'error' => $e->getMessage(),
+            ]);
+
+            $message = config('app.debug')
+                ? 'Erro ao consultar IA: ' . $e->getMessage()
+                : 'Erro ao consultar IA. Tente novamente em instantes.';
+
+            return response()->json(['error' => $message], 500);
+        }
+    }
 }
